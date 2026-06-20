@@ -29,6 +29,20 @@ await initDb();
 const categoryCount = (await all("SELECT COUNT(*) AS count FROM point_categories"))[0].count;
 assert.ok(Number(categoryCount) >= 8, "default point categories should be seeded in Neon");
 
+await all(`
+  SELECT pc.label, pc.category_key, COALESCE(SUM(sp.points), 0) AS total, COUNT(sp.id) AS count
+  FROM point_categories pc
+  LEFT JOIN session_points sp
+    ON sp.category_key = pc.category_key
+    AND EXISTS (
+      SELECT 1 FROM sessions s
+      WHERE s.id = sp.session_id AND s.deleted_at = ''
+    )
+  GROUP BY pc.id, pc.label, pc.category_key, pc.sort_order
+  ORDER BY total DESC, pc.sort_order ASC
+  LIMIT 6
+`);
+
 const sql = await getDb();
 await sql.end({ timeout: 5 });
 

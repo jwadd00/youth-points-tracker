@@ -78,6 +78,9 @@ textarea {
   align-items: center;
   aspect-ratio: 1;
   background: rgba(2, 8, 20, 0.82);
+  background-image: url("/encounter-youth-logo.jpg");
+  background-position: center;
+  background-size: 154%;
   border: 1px solid rgba(121, 244, 255, 0.34);
   border-radius: 999px;
   display: flex;
@@ -85,14 +88,6 @@ textarea {
   justify-content: center;
   overflow: hidden;
   width: 40px;
-}
-
-.brandMark img {
-  display: block;
-  flex: 0 0 auto;
-  height: 154%;
-  object-fit: cover;
-  width: 154%;
 }
 
 .brand strong,

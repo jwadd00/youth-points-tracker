@@ -36,7 +36,7 @@ export default async function AttendeeReportPage({ params }) {
         SELECT 1 FROM sessions s
         WHERE s.id = sp.session_id AND s.deleted_at = ''
       )
-    GROUP BY pc.category_key
+    GROUP BY pc.id, pc.label, pc.category_key, pc.sort_order
     ORDER BY pc.sort_order
   `, [attendee.id]);
   const maxCategory = Math.max(...categoryRows.map((row) => Number(row.total || 0)), 1);

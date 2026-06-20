@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { logout } from "@/app/login/actions";
@@ -27,9 +26,7 @@ export default function Nav() {
     <>
       <header className="topbar">
         <Link className="brand" href="/" onClick={() => setOpen(false)}>
-          <span className="brandMark">
-            <Image src="/encounter-youth-logo.jpg" alt="" width={64} height={64} priority />
-          </span>
+          <span className="brandMark" aria-hidden="true" />
           <span>
             <strong>Rock Youth</strong>
             <small>Rewards Tracker</small>

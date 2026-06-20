@@ -36,7 +36,7 @@ export default async function DashboardPage() {
         SELECT 1 FROM sessions s
         WHERE s.id = sp.session_id AND s.deleted_at = ''
       )
-    GROUP BY pc.category_key
+    GROUP BY pc.id, pc.label, pc.category_key, pc.sort_order
     ORDER BY total DESC, pc.sort_order ASC
     LIMIT 6
   `);
