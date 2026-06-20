@@ -1,0 +1,26 @@
+{
+  "name": "rock-youth-point-tracker",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start -H 0.0.0.0",
+    "lint": "eslint app components lib scripts next.config.mjs eslint.config.mjs",
+    "test": "node scripts/smoke-test.mjs",
+    "test:neon": "node scripts/neon-check.mjs"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "next": "^15.1.6",
+    "postgres": "^3.4.9",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.2.0",
+    "eslint": "^9.18.0",
+    "eslint-config-next": "^15.1.6"
+  }
+}
