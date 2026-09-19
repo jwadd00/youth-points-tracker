@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { all, get, getTopAttendeeBalances, attendeeName } from "@/lib/db";
 import { fmtDate, points } from "@/lib/format";
+import { getBirthdays } from "@/lib/birthdays";
+import BirthdayPanels from "@/components/BirthdayPanels";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +15,6 @@ export default async function DashboardPage() {
   const stats = await get(`
     SELECT
       (SELECT COUNT(*) FROM attendees WHERE status = 'active') AS active_attendees,
-      (SELECT COUNT(*) FROM attendees) AS total_attendees,
       (SELECT COUNT(*) FROM sessions WHERE deleted_at = '') AS sessions,
       (
         SELECT COALESCE(SUM(CASE WHEN l.points > 0 THEN l.points ELSE 0 END), 0)
@@ -27,19 +28,8 @@ export default async function DashboardPage() {
       (SELECT COUNT(*) FROM reward_redemptions) AS redemptions
   `);
   const topBalances = await getTopAttendeeBalances(5);
-  const categoryRows = await all(`
-    SELECT pc.label, pc.category_key, COALESCE(SUM(sp.points), 0) AS total, COUNT(sp.id) AS count
-    FROM point_categories pc
-    LEFT JOIN session_points sp
-      ON sp.category_key = pc.category_key
-      AND EXISTS (
-        SELECT 1 FROM sessions s
-        WHERE s.id = sp.session_id AND s.deleted_at = ''
-      )
-    GROUP BY pc.id, pc.label, pc.category_key, pc.sort_order
-    ORDER BY total DESC, pc.sort_order ASC
-    LIMIT 6
-  `);
+  const birthdayYouth = await all("SELECT id, first_name, last_name, birth_date, status FROM attendees WHERE status = 'active'");
+  const birthdays = getBirthdays(birthdayYouth);
   const recentLedger = await all(`
     SELECT l.*, a.first_name, a.last_name
     FROM point_ledger l
@@ -54,8 +44,6 @@ export default async function DashboardPage() {
   `);
   const recentSessions = await all("SELECT * FROM sessions WHERE deleted_at = '' ORDER BY session_date DESC, id DESC LIMIT 3");
   const leader = topBalances[0];
-  const topCategory = categoryRows[0];
-  const activeRate = stats.total_attendees ? Math.round((stats.active_attendees / stats.total_attendees) * 100) : 0;
 
   return (
     <div className="scorecardPage">
@@ -106,61 +94,7 @@ export default async function DashboardPage() {
         </div>
       </section>
 
-      <section className="scoreInsight cyan deep rewardStatus">
-        <div className="scoreBody">
-          <div className="scoreTitle">
-            <h2>Reward status</h2>
-          </div>
-          <div className="rewardMetricGrid">
-            <div className="rewardMetric primary">
-              <span>Points earned</span>
-              <strong>{points(stats.points_earned)}</strong>
-              <small>{stats.sessions} sessions</small>
-            </div>
-            <div className="rewardMetric">
-              <span>Redemptions</span>
-              <strong>{stats.redemptions}</strong>
-              <small>Rewards claimed</small>
-            </div>
-            <div className="rewardMetric">
-              <span>Active roster</span>
-              <strong>{activeRate}%</strong>
-              <small>{stats.active_attendees} / {stats.total_attendees} active</small>
-            </div>
-            <div className="rewardMetric accent">
-              <span>Top category</span>
-              <strong>{topCategory?.label || "None"}</strong>
-              <small>{topCategory ? signedPoints(topCategory.total) : "+0 pts"}</small>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="scoreInsight magenta categoryTotals">
-        <div className="scoreBody">
-          <div className="scoreTitle">
-            <h2>Category totals</h2>
-          </div>
-          <div className="dualMovement">
-            <div className="movementList">
-              {categoryRows.slice(0, 3).map((category) => (
-                <div key={category.category_key}>
-                  <span>{category.label}</span>
-                  <strong>{signedPoints(category.total)}</strong>
-                </div>
-              ))}
-            </div>
-            <div className="movementList pink">
-              {categoryRows.slice(3, 6).map((category) => (
-                <div key={category.category_key}>
-                  <span>{category.label}</span>
-                  <strong>{points(category.total)}</strong>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+      <BirthdayPanels birthdays={birthdays} />
 
       <section className="scoreFooterGrid">
         <div className="panel neonPanel">

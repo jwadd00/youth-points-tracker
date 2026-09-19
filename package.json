@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start -H 0.0.0.0",
     "lint": "eslint app components lib scripts next.config.mjs eslint.config.mjs",
-    "test": "node scripts/smoke-test.mjs",
+    "test": "node scripts/smoke-test.mjs && node scripts/reporting-test.mjs && node scripts/birthdays-test.mjs",
     "test:neon": "node scripts/neon-check.mjs"
   },
   "dependencies": {

@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { all, attendeeName, getAttendeeBalances } from "@/lib/db";
-import { points, pct } from "@/lib/format";
+import ReportsTable from "@/components/ReportsTable";
 
 export const dynamic = "force-dynamic";
 
@@ -14,7 +13,12 @@ export default async function ReportsPage() {
     WHERE sp.category_key = 'attendance' AND s.deleted_at = ''
     GROUP BY sp.attendee_id
   `);
-  const attendanceById = new Map(attendance.map((row) => [row.attendee_id, row.sessions_attended]));
+  const attendanceById = new Map(attendance.map((row) => [Number(row.attendee_id), Number(row.sessions_attended)]));
+  const rows = attendees.map(attendee => ({
+    id: Number(attendee.id), name: attendeeName(attendee),
+    attendance: attendanceById.get(Number(attendee.id)) || 0,
+    balance: Number(attendee.balance), earned: Number(attendee.earned), spent: Number(attendee.spent)
+  }));
 
   return (
     <>
@@ -26,34 +30,7 @@ export default async function ReportsPage() {
       </section>
 
       <section className="panel">
-        <div className="tableWrap">
-          <table>
-            <thead><tr><th>Youth</th><th>Grade</th><th>Birth Date</th><th>Status</th><th>Balance</th><th>Earned</th><th>Redeemed</th><th>Attendance</th><th></th></tr></thead>
-            <tbody>
-              {attendees.map((attendee) => {
-                const sessionsAttended = attendanceById.get(attendee.id) || 0;
-                const attendanceRate = totalSessions ? (sessionsAttended / totalSessions) * 100 : 0;
-                return (
-                  <tr key={attendee.id}>
-                    <td>{attendeeName(attendee)}</td>
-                    <td>{attendee.grade || "Not set"}</td>
-                    <td>{attendee.birth_date || "Not set"}</td>
-                    <td><span className={attendee.status === "active" ? "pill" : "pill off"}>{attendee.status}</span></td>
-                    <td className="score">{points(attendee.balance)}</td>
-                    <td>{points(attendee.earned)}</td>
-                    <td>{points(attendee.spent)}</td>
-                    <td>
-                      <div>{sessionsAttended} of {totalSessions}</div>
-                      <div className="bar"><span style={{ width: pct(attendanceRate) }} /></div>
-                    </td>
-                    <td><Link className="btn secondary" href={`/reports/${attendee.id}`}>Open</Link></td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-        {!attendees.length && <p className="empty">No youth attendees have been added yet.</p>}
+        <ReportsTable rows={rows} totalSessions={Number(totalSessions)} />
       </section>
     </>
   );
