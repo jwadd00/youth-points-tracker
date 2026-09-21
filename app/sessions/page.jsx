@@ -46,7 +46,16 @@ export default async function SessionsPage({ searchParams }) {
       </section>
 
       <section className="sessionLayout">
-        <div className="panel">
+        <div className="panel newSessionPanel" id="new-session" style={{ scrollMarginTop: 92 }}>
+          <div className="panelTitle"><h2>New session</h2></div>
+          <form action={createSession} className="newSessionForm">
+            <label className="field">Date<input name="session_date" type="date" defaultValue={new Date().toISOString().slice(0, 10)} required /></label>
+            <label className="field">Title<input name="title" placeholder="Wednesday Night" /></label>
+            <label className="field newSessionNotes">Notes<textarea name="notes" rows={2} /></label>
+            <button className="btn" type="submit">Create and edit</button>
+          </form>
+        </div>
+        <div className="panel" id="session-history" style={{ scrollMarginTop: 92 }}>
           <div className="panelTitle">
             <div>
               <h2>Session history</h2>
@@ -87,16 +96,6 @@ export default async function SessionsPage({ searchParams }) {
         </div>
 
         <aside className="sessionSideStack">
-          <div className="panel">
-            <div className="panelTitle"><h2>New session</h2></div>
-            <form action={createSession} className="formGrid">
-              <label className="field">Date<input name="session_date" type="date" defaultValue={new Date().toISOString().slice(0, 10)} required /></label>
-              <label className="field">Title<input name="title" placeholder="Wednesday Night" /></label>
-              <label className="field">Notes<textarea name="notes" /></label>
-              <button className="btn wide" type="submit">Create and edit</button>
-            </form>
-          </div>
-
           <div className="panel">
             <div className="panelTitle">
               <div>

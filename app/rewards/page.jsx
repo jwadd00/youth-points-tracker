@@ -1,4 +1,5 @@
 import { all } from "@/lib/db";
+import Link from "next/link";
 import { deleteReward, saveReward } from "@/lib/actions";
 import { points } from "@/lib/format";
 import SaveToast from "@/components/SaveToast";
@@ -17,6 +18,7 @@ export default async function RewardsPage({ searchParams }) {
           <h1>Rewards</h1>
           <p>Configure rewards that leaders can redeem for youth from their point balances.</p>
         </div>
+        <Link className="btn secondary" href="/point-rules">Configure point awards</Link>
       </section>
 
       <section className="grid two">

@@ -8,6 +8,7 @@ import { logout } from "@/app/login/actions";
 const links = [
   ["Scorecard", "/"],
   ["Sessions", "/sessions"],
+  ["Trends", "/trends"],
   ["Ledger", "/ledger"],
   ["Reports", "/reports"],
   ["Youth", "/attendees"],
@@ -51,6 +52,8 @@ export default function Nav() {
 
       <aside
         aria-label="Section navigation"
+        aria-hidden={!open}
+        inert={!open}
         className={open ? "navDrawer open" : "navDrawer"}
         id="section-drawer"
       >
@@ -70,6 +73,7 @@ export default function Nav() {
             <Link
               className={isActive(href) ? "active" : ""}
               href={href}
+              aria-current={isActive(href) ? "page" : undefined}
               key={href}
               onClick={() => setOpen(false)}
             >
