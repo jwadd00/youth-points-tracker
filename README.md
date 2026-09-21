@@ -15,6 +15,8 @@ Open `http://localhost:3000`. The app opens directly to the admin dashboard and 
 
 ## Included workflows
 
+- Compact session-summary landing page with total point balance and seven-day change, active youth and estimated month-over-month roster growth, and an attendance sparkline for the last eight sessions. Comparisons use Central time; roster growth uses current active members' join dates because historical status changes were not recorded.
+
 - Youth attendee admin with inline edit/remove support, including grade and birth date metadata.
 - Leader/admin display records with inline edit/remove support.
 - Configurable point rules for attendance, Bible, prayer, reading aloud, insights, questions, notes, and bringing a friend.

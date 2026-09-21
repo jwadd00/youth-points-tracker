@@ -46,7 +46,7 @@ export default async function SessionsPage({ searchParams }) {
       </section>
 
       <section className="sessionLayout">
-        <div className="panel newSessionPanel">
+        <div className="panel newSessionPanel" id="new-session" style={{ scrollMarginTop: 92 }}>
           <div className="panelTitle"><h2>New session</h2></div>
           <form action={createSession} className="newSessionForm">
             <label className="field">Date<input name="session_date" type="date" defaultValue={new Date().toISOString().slice(0, 10)} required /></label>
@@ -55,7 +55,7 @@ export default async function SessionsPage({ searchParams }) {
             <button className="btn" type="submit">Create and edit</button>
           </form>
         </div>
-        <div className="panel">
+        <div className="panel" id="session-history" style={{ scrollMarginTop: 92 }}>
           <div className="panelTitle">
             <div>
               <h2>Session history</h2>
