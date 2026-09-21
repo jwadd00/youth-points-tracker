@@ -15,6 +15,7 @@ export default async function PointRulesPage({ searchParams }) {
         <div>
           <h1>Point rules</h1>
           <p>Configure which actions can earn points and how many points each action is worth.</p>
+          <p className="muted">Changes apply to newly awarded points. Existing awards keep their recorded values.</p>
         </div>
       </section>
 
@@ -23,7 +24,14 @@ export default async function PointRulesPage({ searchParams }) {
           <table>
             <thead><tr><th>Category</th><th>Points</th><th>Enabled</th><th></th></tr></thead>
             <tbody>
-              {categories.map((category) => (
+              {categories.map((category) => category.category_key === "participation" ? (
+                <tr key={category.id}>
+                  <td>Participation <small className="muted">Historical awards</small></td>
+                  <td>Original values preserved</td>
+                  <td>Archived</td>
+                  <td></td>
+                </tr>
+              ) : (
                 <tr key={category.id}>
                   <td>
                     <form id={`category-${category.id}`} action={savePointCategory} className="formGrid">

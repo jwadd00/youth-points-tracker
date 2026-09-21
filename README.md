@@ -17,7 +17,9 @@ Open `http://localhost:3000`. The app opens directly to the admin dashboard and 
 
 - Youth attendee admin with inline edit/remove support, including grade and birth date metadata.
 - Leader/admin display records with inline edit/remove support.
-- Configurable point rules for attendance, Bible, prayer, reading aloud, insights, questions, notes, and participation.
+- Configurable point rules for attendance, Bible, prayer, reading aloud, insights, questions, notes, and bringing a friend.
+- Approved awards: attendance 2, Bible 5, prayer 5, reading aloud 4, insights 5, questions 3, notes 5, and bringing a friend 10. Historical Participation points are archived and preserved.
+- Point rule edits apply to new awards; saving an existing meeting preserves already-recorded values and archived points.
 - Reward catalog with point costs and active/inactive status.
 - Meeting/session point entry for active youth.
 - Manual ledger entries for adjustments, bonuses, and corrections.
